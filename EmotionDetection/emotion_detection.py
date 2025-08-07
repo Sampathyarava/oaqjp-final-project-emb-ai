@@ -15,6 +15,11 @@ def emotion_detector(text_to_analyse):
     body = { "raw_document": { "text": text_to_analyse }}
     # trigger request of method post and capture response in response variable 
     response=requests.post(url, headers = header, json = body)
+    
+    # Add error handling for 400 status code
+    if response.status_code == 400:
+        return {"anger": None, "disgust": None, "fear": None, "joy": None, "sadness": None, "dominent_emotion": None}
+    
     #convert response to json using json library.
     formatted_response = json.loads(response.text)
     emotions= formatted_response['emotionPredictions'][0]['emotion']

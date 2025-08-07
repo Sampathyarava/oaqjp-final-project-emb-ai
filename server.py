@@ -19,8 +19,11 @@ def captured_text():
     '''
     test_to_detect = request.args.get('textToAnalyze')
     response = emotion_detector(test_to_detect)
+    #adding Exception handling block
+    if response['dominent_emotion'] is None:
+        return "<b>Invalid text! Please try again!.<b>"
 
-    return f"For the given statement, the system response is 'anger': {response['anger']}, 'disgust': {response['disgust']}, 'fear': {response['fear']}, 'joy': {response['fear']}, 'sadness': {response['sadness']}. The dominent emotion is <b>{response['dominent_emotion']}.<b>" 
+    return f"For the given statement, the system response is 'anger': {response['anger']}, 'disgust': {response['disgust']}, 'fear': {response['fear']}, 'joy': {response['fear']}, 'sadness': {response['sadness']}. The dominent emotion is <b>{response['dominent_emotion']}.<b>"
 
 @app.route("/")
 def render_index_page():
@@ -30,5 +33,5 @@ def render_index_page():
     return render_template('index.html')
 
 if __name__ == "__main__":
-  
+
     app.run(host="0.0.0.0", port=5000)
